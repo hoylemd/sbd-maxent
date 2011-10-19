@@ -24,14 +24,13 @@ test = [
 def test_maxent(algorithms):
 	print "in test_maxent"
 	classifiers = {}
-	for algorith in nltk.classify.MaxentClassifier.ALGORITHMS:
-		if algorithm.lower() == 'megam':
-			try: nltk.classify.megam.config_megam()
-			except: raise #continue
-		try:
-			classifiers[algorithm] = nltk.MaxentClassifier.train(train, algorithm, trace=0, max_iter=1000)
-		except Exception, e:
-			classifiers[algorithm] = e
+	for algorithm in nltk.classify.MaxentClassifier.ALGORITHMS:
+		print "Training for algorithm " + algorithm.lower()
+		if algorithm.lower() == ('gis'):
+			try:
+				classifiers[algorithm] = nltk.MaxentClassifier.train(train, algorithm, trace=0, max_iter=1000)
+			except Exception, e:
+				classifiers[algorithm] = e
 	print ' '*11+''.join(['      test[%s]  ' % i
 						for i in range(len(test))])
 	print ' '*11+'     p(x)  p(y)'*len(test)
