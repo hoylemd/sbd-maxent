@@ -19,6 +19,7 @@ int main(int argc, char* argv[])
     ofstream out;
     int ignoreANewline = 0;
     FileName * fileName = NULL;
+	int firstToken = 1;	
 
     // open files
     if (argc > 1)
@@ -30,10 +31,6 @@ int main(int argc, char* argv[])
         fileName = new FileName(filePath);
         delete filePath;
 
-        // open up the output file
-        filePath = fileName->nextFile();
-        out.open(filePath->data());
-        delete filePath;
     }
 
     // parse the tokens
@@ -62,6 +59,14 @@ int main(int argc, char* argv[])
 
     while(current)
     {
+		if (firstToken && current->getType() != DOC)
+		{
+			filePath = fileName->nextFile();
+			out.open(filePath->data());
+		}
+
+		firstToken = 0;
+
         //cout << current->getType() << " [" << *current->getValue() <<
         //    "]" << endl;
         // handle simple end of sentences
@@ -99,7 +104,7 @@ int main(int argc, char* argv[])
             }
             case (WHITESPACE):
             {
-                out << " ";
+                out << *current->getValue();
                 
                 result = current;
                 current = current->getNext();
@@ -108,7 +113,7 @@ int main(int argc, char* argv[])
             }
             case (NEWLINE):
             {
-                out << "\n";
+                out << *current->getValue();
                 
                 result = current;
                 current = current->getNext();
@@ -117,17 +122,14 @@ int main(int argc, char* argv[])
             }
             case (DOC):
             {
-                // consume the DOC token
-                // consume the next token (it'll be whitespace)
-                if (current->getNext()) current = current->getNext();
-                // consume the next token too (it'll be a number)
-                if (current->getNext()) current = current->getNext();
-                // ignore a following newline
-                ignoreANewline = 1;
+                out << *current->getValue();
 
-                // close the open output file
-                out.close();
-                delete filePath;
+				// close the open output file
+                if (out.is_open())
+				{
+					out.close();
+                	delete filePath;
+				}
 
                 // open the next output file
                 filePath = fileName->nextFile();
