@@ -750,7 +750,7 @@ case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
 #line 15 "tokenizer.l"
-{ return WHITESPACE;}
+{ /*return WHITESPACE*/;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
@@ -1804,7 +1804,7 @@ Token * getTokenList()
 {
     Token * list = NULL, * temp, *end;
 
-    while(temp = getToken())
+    while((temp = getToken()))
     {
         if (!list)
         {

@@ -13,6 +13,21 @@ Token::Token(tokenType type, string * value)
     this->type = type;
 }
 
+// Copy constructor
+Token::Token(Token * other)
+{
+    if (other)
+    {
+        this->value = new string(*(other->getValue()));
+        this->type = other->getType();
+    }
+    else
+    {
+        cerr << "attempt to copy a null token.";
+        exit(0);
+    }
+}
+
 // Destructor
 Token::~Token()
 {
@@ -28,7 +43,6 @@ string * Token::typeToString(tokenType type)
     switch(type)
     {
         case TOKEN :        return new string("Token");
-        case CANDIDATE :    return new string("Candidate");
         case WHITESPACE :   return new string("Whitespace");
         case NONE:          return new string("None");
         default:            return new string("Unknown");
@@ -115,6 +129,7 @@ Token * Token::concat(Token * list)
 // Stringer
 string * Token::toString()
 {
+    int i = 0;
     string * returner = new string();
     string * typeName = NULL;
 

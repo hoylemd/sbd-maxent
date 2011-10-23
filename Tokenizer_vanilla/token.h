@@ -38,6 +38,7 @@ class Token
 
 public:
     Token(tokenType, string *);
+    Token(Token *);
     ~Token();
     static string * typeToString(tokenType);
     static Token * attachLists(Token *, Token *);

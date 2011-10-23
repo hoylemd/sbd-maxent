@@ -12,7 +12,7 @@ candidate	{valid}*{punctuation}+{valid}*
 
 {valid}			{ return TOKEN;}
 {candidate}		{ return CANDIDATE;}
-{whitespace}	{ return WHITESPACE;}
+{whitespace}	{ /*return WHITESPACE*/;}
 
 %%
 
@@ -61,7 +61,7 @@ Token * getTokenList()
 {
     Token * list = NULL, * temp, *end;
 
-    while(temp = getToken())
+    while((temp = getToken()))
     {
         if (!list)
         {

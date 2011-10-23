@@ -17,6 +17,7 @@ using namespace std;
 // local includes
 #ifndef LOCAL_INCLUDES
 #include "token.h"
+#include "context.h"
 #define LOCAL_INCLUDES
 #endif
 
