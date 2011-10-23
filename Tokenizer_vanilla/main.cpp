@@ -8,7 +8,7 @@ FILE * source = NULL;
 int main(int argc, char* argv[])
 {
 	// Local variables
-	string * resultString;
+	string * dummy = new string("");
 	Token * result;
 
 	// open source file if any.
@@ -17,14 +17,12 @@ int main(int argc, char* argv[])
 		source = fopen(argv[1], "r");
 	}
 
-	// parse the tokens
-	while(result = getToken())
-	{
-		resultString = result->toString();
-		cout << *resultString << '\n';
-		delete resultString;
-	}
+    result = getTokenList();
+
+	result->outputList(dummy);
 
 	// clean up
+    delete result;
+    delete dummy;
 	if (source) fclose(source);
 }

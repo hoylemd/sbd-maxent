@@ -57,3 +57,19 @@ Token * getToken()
 
 }
 
+Token * getTokenList()
+{
+    Token * list = NULL, * temp, *end;
+
+    return getToken();
+
+    /*while(temp = getToken())
+    {
+        if (!list)
+        {
+            list =
+        }
+    }*/
+
+}
+

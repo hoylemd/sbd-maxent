@@ -1,1 +1,1 @@
-added test rule to makefile.
+Added new token types and began to move token list construction out of the main.

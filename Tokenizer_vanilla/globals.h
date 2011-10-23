@@ -33,3 +33,4 @@ extern FILE * source;
 // Prototype for getToken routine
 // Is used to get the next token from the stream and generate an object for it.
 Token * getToken();
+Token * getTokenList();

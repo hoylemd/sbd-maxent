@@ -5,8 +5,8 @@ all : Tokenizer
 lex.yy.cpp : tokenizer.l
 	flex -o lex.yy.cpp tokenizer.l
 
-Tokenizer : lex.o main.o token.o globals.h token.h
-	g++ lex.o main.o token.o -o Tokenizer $(CFLAGS)
+Parser : lex.o main.o token.o globals.h token.h
+	g++ lex.o main.o token.o -o Parser $(CFLAGS)
 
 main.o : main.cpp globals.h
 	g++ -c -g main.cpp -o main.o $(CFLAGS)
@@ -24,4 +24,4 @@ test : clean Tokenizer
 	./Tokenizer testFile.txt
 
 clean :
-	rm -f *.o lex.yy.c *~ Tokenizer valgrind-results.txt
+	rm -f *.o lex.yy.c *~ Parser valgrind-results.txt
