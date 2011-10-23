@@ -115,7 +115,6 @@ Token * Token::concat(Token * list)
 // Stringer
 string * Token::toString()
 {
-    int i = 0;
     string * returner = new string();
     string * typeName = NULL;
 

@@ -61,15 +61,21 @@ Token * getTokenList()
 {
     Token * list = NULL, * temp, *end;
 
-    return getToken();
-
-    /*while(temp = getToken())
+    while(temp = getToken())
     {
         if (!list)
         {
-            list =
+            list = temp;
+            end = list;
         }
-    }*/
+        else
+        {
+            end->concat(temp);
+            end = temp;
+        }
+    }
+
+    return list;
 
 }
 
