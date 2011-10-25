@@ -23,26 +23,14 @@ int main(int argc, char* argv[])
     result = getTokenList();
 
     // Handle the tokens
-    // test the conext construction first
     temp = result;
-    checkForBoundary(temp);
-    temp = temp->getNext();
-    checkForBoundary(temp);
-    temp = temp->getNext();
-    checkForBoundary(temp);
-    temp = temp->getNext();
-    checkForBoundary(temp);
+    while (temp)
+    {
+        if (temp->getType() == CANDIDATE)
+            checkForBoundary(temp);
 
-    while (temp->getNext())
         temp = temp->getNext();
-
-    checkForBoundary(temp);
-    temp = temp->getPrev();
-    checkForBoundary(temp);
-    temp = temp->getPrev();
-    checkForBoundary(temp);
-    temp = temp->getPrev();
-    checkForBoundary(temp);
+    }
 
 	//result->outputList(dummy);
 
