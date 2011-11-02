@@ -22,3 +22,11 @@ Period
 16) not after chemical symbols, words indicating the size of books, and the word percent
 17) not after a singature and after a title following a signature in a letter
 18) 3 separated by spaces to denote an omission in quoted matter
+
+Question Mark & Exclaimation mark: assume yes for now.
+
+Formal rules:
+Period
+1)
+2) 
+3) if len(context(3) == 2 && 
