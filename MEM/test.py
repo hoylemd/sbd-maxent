@@ -3,10 +3,6 @@ import pickle
 import sys
 
 def test_maxent(model, data):
-	print "in test_maxent"
-
-	f = open("classdemo.model", 'r')
-	
 	if isinstance(model, Exception):
 		print 'Error: %r' % model
 	else:
@@ -20,15 +16,15 @@ def test_maxent(model, data):
 
 
 if len(sys.argv) == 3:
-	modelFile = open(sys.argv[1], 'r')
-	model = pickle.load(modelFile)
-
-	dataFile = open(sys.argv[2], 'r')
+	dataFile = open(sys.argv[1], 'r')
 	data = pickle.load(dataFile)
+
+	modelFile = open(sys.argv[2], 'r')
+	model = pickle.load(modelFile)
 
 	test_maxent(model, data)
 
 else:
-	print "Useage: python test.py modelFile dataFile"
-	print "    Where modelFile is the name of the saved model file"
-	print "      and dataFile is the name of tha saved data file to test with"
+	print "Useage: python test.py dataFile modelFile"
+	print "    Where dataFile is the name of the saved data file to test with"
+	print "      and modelFileFile is the name of the saved model file"
