@@ -1,31 +1,34 @@
 import nltk
 import pickle
+import sys
 
-test = [
-    (dict(a=1,b=0,c=1)), # unseen
-    (dict(a=1,b=0,c=0)), # unseen
-    (dict(a=0,b=1,c=1)), # seen 3 times, labels=y,y,x
-    (dict(a=0,b=1,c=0)), # seen 1 time, label=x
-    ]
-
-def test_maxent(algorithm):
+def test_maxent(model, data):
 	print "in test_maxent"
 
 	f = open("classdemo.model", 'r')
-
-	classifier = pickle.load(f)
 	
-	if isinstance(classifier, Exception):
-		print 'Error: %r' % classifier
+	if isinstance(model, Exception):
+		print 'Error: %r' % model
 	else:
 		i = 1;
-		for featureset in test:
+		for featureset in data:
 			print "Test #%d:" % (i),
 			i += 1
-			pdist = classifier.prob_classify(featureset)
-			label = classifier.classify(featureset)
+			pdist = model.prob_classify(featureset)
+			label = model.classify(featureset)
 			print 'x: %.2f y: %.2f descision: %s' % (pdist.prob('x'), pdist.prob('y'), label)
 
-print "starting"		
-nltk.classify.MaxentClassifier.ALGORITHMS
-test_maxent(nltk.classify.MaxentClassifier.ALGORITHMS[0])
+
+if len(sys.argv) == 3:
+	modelFile = open(sys.argv[1], 'r')
+	model = pickle.load(modelFile)
+
+	dataFile = open(sys.argv[2], 'r')
+	data = pickle.load(dataFile)
+
+	test_maxent(model, data)
+
+else:
+	print "Useage: python test.py modelFile dataFile"
+	print "    Where modelFile is the name of the saved model file"
+	print "      and dataFile is the name of tha saved data file to test with"
