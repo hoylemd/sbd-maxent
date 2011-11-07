@@ -21,27 +21,24 @@ test = [
     (dict(a=0,b=1,c=0)), # seen 1 time, label=x
     ]
 
-def test_maxent(algorithms):
+def test_maxent(algorithm):
 	print "in test_maxent"
-	classifiers = {}
-	algorithm = algorithms.GIS
 	try:
-		classifiers[algorithm] = nltk.MaxentClassifier.train(train, algorithm, trace=0, max_iter=1000)
+		classifier = nltk.MaxentClassifier.train(train, 'GIS', trace=0, max_iter=1000)
 	except Exception, e:
-		classifiers[algorithm] = e
-
-	print ' '*11+''.join(['      test[%s]  ' % i
-				for i in range(len(test))])
-	print ' '*11+'     p(x)  p(y)'*len(test)
-	print '-'*(11+15*len(test))
-	for algorithm, classifier in classifiers.items():
-		print '%11s' % algorithm,
-		if isinstance(classifier, Exception):
-			print 'Error: %r' % classifier; continue
+		classifier = e
+	
+	if isinstance(classifier, Exception):
+		print 'Error: %r' % classifier
+	else:
+		i = 1;
 		for featureset in test:
+			print "Test #%d:" % (i),
+			i += 1
 			pdist = classifier.prob_classify(featureset)
-			print '%8.2f%6.2f' % (pdist.prob('x'), pdist.prob('y')),
-		print
+			label = classifier.classify(featureset)
+			print 'x: %.2f y: %.2f descision: %s' % (pdist.prob('x'), pdist.prob('y'), label)
 
 print "starting"		
-test_maxent(nltk.classify.MaxentClassifier.ALGORITHMS)
+nltk.classify.MaxentClassifier.ALGORITHMS
+test_maxent(nltk.classify.MaxentClassifier.ALGORITHMS[0])

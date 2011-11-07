@@ -29,12 +29,12 @@ def test_maxent(algorithms):
                     train, algorithm, trace=0, max_iter=1000)
         except Exception, e:
             classifiers[algorithm] = e
-    print ' '*11+''.join(['      test[%s]  ' % i
-                          for i in range(len(test))])
-    print ' '*11+'     p(x)  p(y)'*len(test)
-    print '-'*(11+15*len(test))
-    for algorithm, classifier in classifiers.items():
-        print '%11s' % algorithm,
+	
+	print "======================="
+	print classifiers.items()
+	print "======================="
+	for algorithm, classifier in classifiers.items():
+		print '%11s' % algorithm,
         if isinstance(classifier, Exception):
             print 'Error: %r' % classifier; continue
         for featureset in test:
