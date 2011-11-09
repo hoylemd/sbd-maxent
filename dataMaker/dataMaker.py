@@ -1,6 +1,7 @@
 import string
 import sys
 
+# list of honourifics to check against
 honourific_list = [
 	"mr.",
 	"mrs.",
@@ -17,16 +18,24 @@ honourific_list = [
 	"cpt.",
 	"mjr.",
 	"col.",
-	"gen."
+	"gen.",
+	"hrm."
 ]
 
+# feature function for honourifics
 def isHonourific(context, response):
-	candidate = context[3]
-	for honourific in honourific_list:
-		if candidate.lower == honourific.lower:
-			return true
+	# grab the relevant token
+	candidate = context[3].lower()
 
-	return false
+	# check it against the list
+	for honourific in honourific_list:	
+		if candidate == honourific:
+			return 1
+
+	# fall-through
+	return 0
+
+# main script==========================================
 
 if len(sys.argv) == 2:
 	f = open(sys.argv[1], 'r')
@@ -42,6 +51,13 @@ if len(sys.argv) == 2:
 		print
 		contexts.append(words)
 
+	contextFeatures = []	
+	for context in contexts:
+		features = dict(
+			honourificTest= isHonourific(context, True))
+		contextFeatures.append(features)
+
+	print contextFeatures
 	
 
 else:
