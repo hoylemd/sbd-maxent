@@ -105,3 +105,29 @@ Token * Context::getList(void)
         }
     }
 }
+
+// function to output this context as a string
+string * Context::output(ostream * out, string * delimiter)
+{
+	int i = 0;
+	int first = 1;	
+	Token * current;
+	string * blankToken = new string("<//>");
+
+	for (i = 0; i < 6; i++)
+	{
+		current = this->tokens[i];
+		if (current)
+			*out << current->getValue();
+		else
+			*out << *blankToken;
+
+		if (first)
+			first = 0;
+		else
+			*out << *delimiter;
+	}
+
+	delete blankToken;
+
+}

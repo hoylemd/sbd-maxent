@@ -48,10 +48,11 @@ int main(int argc, char* argv[])
 bool checkForBoundary(Token * candidate)
 {
     Context * context = new Context(candidate);
+	string * delimiter = new string (" ");
+	
+    context->output(dest, delimiter);
 
-    context->getList()->outputList(dest, new string(" "));
-    cout << endl;
-
+	delete delimiter;	
 
     return false;
 }

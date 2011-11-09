@@ -11,4 +11,5 @@ public:
     ~Context();
 
     Token * getList();
+	string * output(ostream *, string * delimiter);
 };

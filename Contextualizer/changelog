@@ -1,1 +1,1 @@
-Made up contextualizer to ise stdin and stdout by default.  usage is now cat <infile> | ./Parser > <outfile>
+added stuff so that contextualizer outputs nontokens properly, but now it segfaults :(
