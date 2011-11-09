@@ -1,0 +1,4 @@
+added copy constructor to token class.
+added context class
+added context generator.
+now to integrate with nltk. eek!
