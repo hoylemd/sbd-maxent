@@ -170,20 +170,20 @@ void Token::outputList(string * delimiter)
 }
 
 // Outputter
-void Token::outputList(fstream out, string * delimiter)
+void Token::outputList(ostream * out, string * delimiter)
 {
     Token * current = this;
     string *outString;
 
     outString = current->getValue();
-    out << *outString;
+    *out << *outString;
     current = current->getNext();
 
     while (current)
     {
-        out << &delimiter;
+        *out << *delimiter;
         outString = current->getValue();
-        out << *outString;
+        *out << *outString;
         current = current->getNext();
     }
 

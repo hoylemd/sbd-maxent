@@ -55,7 +55,7 @@ public:
     Token * concat(Token *);       // appends the provided to this list
     string * toString();
     void outputList(string *);
-    void outputList(fstream, string *);
+    void outputList(ostream *, string *);
 };
 #define TOKENCLASS
 #endif

@@ -8,6 +8,7 @@
 #ifndef STD_INCLUDES
 using namespace std;
 #include <iostream>
+#include <fstream>
 #include <cstdio>
 #include <string>
 #include <cstring>

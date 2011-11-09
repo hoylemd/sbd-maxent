@@ -1,4 +1,1 @@
-added copy constructor to token class.
-added context class
-added context generator.
-now to integrate with nltk. eek!
+Made up contextualizer to ise stdin and stdout by default.  usage is now cat <infile> | ./Parser > <outfile>

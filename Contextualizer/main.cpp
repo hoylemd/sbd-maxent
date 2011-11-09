@@ -3,6 +3,7 @@
 
 // define the IOstreams
 FILE * source = NULL;
+ostream * dest = NULL;
 
 bool checkForBoundary(Token *);
 
@@ -16,10 +17,14 @@ int main(int argc, char* argv[])
 
 	// open source file if any.
 	if (argc > 1)
-	{
 		source = fopen(argv[1], "r");
-	}
-
+	else
+		source = stdin;
+	if (argc > 2)
+		dest = new fstream(argv[2], fstream::in | fstream::out);
+	else
+		dest = &cout;
+	
     result = getTokenList();
 
     // Handle the tokens
@@ -44,7 +49,7 @@ bool checkForBoundary(Token * candidate)
 {
     Context * context = new Context(candidate);
 
-    context->getList()->outputList(new string("|"));
+    context->getList()->outputList(dest, new string(" "));
     cout << endl;
 
 
