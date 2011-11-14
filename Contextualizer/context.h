@@ -1,5 +1,8 @@
 #include "token.h"
 
+// debug macros. comment out to disable debug messages
+// #define DEBUGCONTEXT 1
+
 using namespace std;
 
 class Context
@@ -11,5 +14,5 @@ public:
     ~Context();
 
     Token * getList();
-	string * output(ostream *, string * delimiter);
+	void output(ostream *, string * delimiter);
 };

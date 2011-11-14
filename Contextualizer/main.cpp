@@ -27,10 +27,12 @@ int main(int argc, char* argv[])
 	
     result = getTokenList();
 
+
     // Handle the tokens
     temp = result;
     while (temp)
     {
+//		cerr << "handling token " << temp->getValue()->data() << endl;
         if (temp->getType() == CANDIDATE)
             checkForBoundary(temp);
 
@@ -51,6 +53,8 @@ bool checkForBoundary(Token * candidate)
 	string * delimiter = new string (" ");
 	
     context->output(dest, delimiter);
+
+	*dest << endl;	
 
 	delete delimiter;	
 

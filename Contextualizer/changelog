@@ -1,1 +1,4 @@
-added stuff so that contextualizer outputs nontokens properly, but now it segfaults :(
+fixed the segafult.
+improved the debug behavior a bit.
+fixed some spacing stuff in the context outputting.
+modified testing to use pipeline functionality.

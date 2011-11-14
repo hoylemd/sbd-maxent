@@ -9,6 +9,8 @@ using namespace std;
 // Constructor
 Token::Token(tokenType type, string * value)
 {
+	this->next = NULL;
+	this->prev = NULL;
     this->value = new string(*value);
     this->type = type;
 }
@@ -18,6 +20,8 @@ Token::Token(Token * other)
 {
     if (other)
     {
+		this->next = NULL;
+		this->prev = NULL;
         this->value = new string(*(other->getValue()));
         this->type = other->getType();
     }
@@ -53,17 +57,26 @@ string * Token::typeToString(tokenType type)
 // attaches the provided lists to one another
 Token * Token::attachLists(Token * head, Token * list)
 {
+	
     Token * headFoot = head;
-
-    // find the end of the new head
+	#ifdef DEBUGTOKENS
+	cerr << "attaching lists";
+	if (head) cerr << " head exists,";
+	else cerr << " head DNE!!!!,";
+	if (list) cerr << " list exists." << endl;
+	else cerr << " list DNE!!!!." << endl;
+    #endif
+	// find the end of the new head
     while (headFoot->getNext())
+	{
         headFoot = headFoot->getNext();
+	}
 
     // attach this to it
-        list->setPrev(headFoot);
-        headFoot->setNext(list);
+    list->setPrev(headFoot);
+    headFoot->setNext(list);
 
-        return head;
+    return head;
 }
 
 // Accessor for value
@@ -95,6 +108,10 @@ void Token::setNext(Token * tok)
 // Accessor for next
 Token * Token::getNext()
 {
+	#ifdef DEBUGTOKENS
+	if (this->next) cerr << "getting next. exists.\n";
+	else cerr << "getting next. DNE!\n";
+	#endif
     return this->next;
 }
 

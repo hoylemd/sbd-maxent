@@ -11,6 +11,9 @@ using namespace std;
 #include <iostream>
 #include <fstream>
 
+// Debugging macros comment this out to hide debug messages
+// #define DEBUGTOKENS 1
+
 // Token type list.
 #define MAXNUMTOKENS    64
 #define MAXTOKENLENGTH  128

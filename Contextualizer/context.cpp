@@ -7,8 +7,10 @@ Context::Context(Token * candidate)
     Token * head;
     // populate the context
 
-    // see if there are 3
+    // add the radix
     this->tokens[3] = new Token(candidate);
+
+	temp = candidate;
 
     if ((temp = temp->getPrev()))
     {
@@ -24,8 +26,9 @@ Context::Context(Token * candidate)
                 temp = this->tokens[0];
             }
             else
+			{
                 this->tokens[0] = NULL;
-
+			}
             if (temp) temp->concat(this->tokens[1]);
             temp = this->tokens[1];
         }
@@ -101,31 +104,36 @@ Token * Context::getList(void)
         else
         {
             if (tokens[2]) return tokens[2];
-            else return tokens[3];
         }
     }
+	return tokens[3];
 }
 
 // function to output this context as a string
-string * Context::output(ostream * out, string * delimiter)
+void Context::output(ostream * out, string * delimiter)
 {
 	int i = 0;
 	int first = 1;	
 	Token * current;
-	string * blankToken = new string("<//>");
+	string * blankToken = new string("</>");
 
-	for (i = 0; i < 6; i++)
+	#ifdef DEBUGCONTEXT
+	cerr << "outputting context to stream, using '" << delimiter->data() << "' as a delimiter.\n";
+	#endif
+
+	for (i = 0; i < 7; i++)
 	{
-		current = this->tokens[i];
-		if (current)
-			*out << current->getValue();
-		else
-			*out << *blankToken;
-
 		if (first)
 			first = 0;
 		else
 			*out << *delimiter;
+		
+		current = this->tokens[i];
+		if (current)
+			*out << *current->getValue();
+		else
+			*out << *blankToken;
+
 	}
 
 	delete blankToken;
