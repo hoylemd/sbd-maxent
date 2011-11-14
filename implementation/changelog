@@ -1,0 +1,4 @@
+fixed contextualizer so that it closes the files properly.
+added the test and training data ganeration code to the test and train files.
+Fixed the bug where it wasn't generateing marked training data.
+System works now! all we need is some feature functions and more data.

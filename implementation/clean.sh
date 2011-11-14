@@ -1,4 +1,3 @@
 #! /bin/bash
 
-rm Contextualizer *.py *.contexts
-
+rm -f Contextualizer *.context *.model

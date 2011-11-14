@@ -14,14 +14,17 @@ int main(int argc, char* argv[])
 	string * dummy = new string("");
 	Token * result;
     Token * temp;
-
+	fstream * actualFile = NULL;
 	// open source file if any.
 	if (argc > 1)
 		source = fopen(argv[1], "r");
 	else
 		source = stdin;
 	if (argc > 2)
-		dest = new fstream(argv[2], fstream::in | fstream::out);
+	{
+		actualFile = new fstream(argv[2], fstream::in | fstream::out);
+		dest = actualFile;
+	}
 	else
 		dest = &cout;
 	
@@ -40,10 +43,11 @@ int main(int argc, char* argv[])
     }
 
 
-	// clean up
+// clean up
     delete result;
     delete dummy;
 	if (source) fclose(source);
+	if (actualFile) actualFile->close();
 }
 
 bool checkForBoundary(Token * candidate)
