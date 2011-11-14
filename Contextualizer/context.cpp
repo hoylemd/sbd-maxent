@@ -5,13 +5,14 @@ Context::Context(Token * candidate)
 {
     Token * temp = candidate;
     Token * head;
-    // populate the context
+
+	this->isEOS = false;
 
     // add the radix
     this->tokens[3] = new Token(candidate);
 
+	// add the prefix
 	temp = candidate;
-
     if ((temp = temp->getPrev()))
     {
         this->tokens[2] = new Token(temp);
@@ -109,11 +110,22 @@ Token * Context::getList(void)
 	return tokens[3];
 }
 
+// accessor for end-of-sentence state
+int Context::isEndOfSentence(void)
+{
+	return this->isEOS;
+}
+
+// mutator for end-of-sentence state
+void Context::setEndOfSentence(int newValue)
+{
+	this->isEOS = newValue;
+}
+
 // function to output this context as a string
 void Context::output(ostream * out, string * delimiter)
 {
 	int i = 0;
-	int first = 1;	
 	Token * current;
 	string * blankToken = new string("</>");
 
@@ -123,18 +135,20 @@ void Context::output(ostream * out, string * delimiter)
 
 	for (i = 0; i < 7; i++)
 	{
-		if (first)
-			first = 0;
-		else
-			*out << *delimiter;
-		
+	
 		current = this->tokens[i];
 		if (current)
 			*out << *current->getValue();
 		else
 			*out << *blankToken;
-
+	
+		*out << *delimiter;
 	}
+
+	if (this->isEOS)
+		*out << "<Y>";
+	else
+		*out << "<N>";
 
 	delete blankToken;
 

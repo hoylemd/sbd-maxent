@@ -1,4 +1,1 @@
-fixed the segafult.
-improved the debug behavior a bit.
-fixed some spacing stuff in the context outputting.
-modified testing to use pipeline functionality.
+added end of sentence tagging to contexts.
