@@ -2,40 +2,8 @@ import pickle
 import nltk
 import sys
 import string
+import features
 
-# list of honourifics to check against
-honourific_list = [
-	"mr.",
-	"mrs.",
-	"dr.",
-	"ms.",
-	"prof.",
-	"pvt.",
-	"cpl.",
-	"mcpl.",
-	"sgt.",
-	"wo.",
-	"cdt.",
-	"lt.",
-	"cpt.",
-	"mjr.",
-	"col.",
-	"gen.",
-	"hrm."
-]
-
-# feature function for honourifics
-def isHonourific(context, response):
-	# grab the relevant token
-	candidate = context[3].lower()
-
-	# check it against the list
-	for honourific in honourific_list:	
-		if candidate == honourific:
-			return 1
-
-	# fall-through
-	return 0
 
 def setupData(filename):
 	f = open(filename, 'r')
@@ -54,13 +22,12 @@ def setupData(filename):
 	contextFeatures = []	
 	for context in contexts:
 		case = []
-		features = dict(
-			honourificTest= isHonourific(context, True))
+		feats = features.testFeatures(context)
 		if context[7] == "<Y>":
 			classification = "y"
 		else:
 			classification = "x"
-		case.append(features)
+		case.append(feats)
 		case.append(classification)
 		contextFeatures.append(case)
 
