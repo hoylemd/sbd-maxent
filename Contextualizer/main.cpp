@@ -32,14 +32,13 @@ int main(int argc, char* argv[])
     temp = result;
     while (temp)
     {
-//		cerr << "handling token " << temp->getValue()->data() << endl;
-        if (temp->getType() == CANDIDATE)
+		//cerr << "handling token " << *temp->toString() << endl;
+        if (temp->getType() == FALSEEND || temp->getType() == ENDOFSENTENCE)
             checkForBoundary(temp);
 
         temp = temp->getNext();
     }
 
-	//result->outputList(dummy);
 
 	// clean up
     delete result;
@@ -49,6 +48,7 @@ int main(int argc, char* argv[])
 
 bool checkForBoundary(Token * candidate)
 {
+	//cerr << "checking for boundary on " << *candidate->toString() << endl;
     Context * context = new Context(candidate);
 	string * delimiter = new string (" ");
 	

@@ -6,7 +6,11 @@ Context::Context(Token * candidate)
     Token * temp = candidate;
     Token * head;
 
-	this->isEOS = false;
+	// check for EOS
+	if (candidate->getType() == ENDOFSENTENCE)
+		this->isEOS = true;
+	else
+		this->isEOS = false;
 
     // add the radix
     this->tokens[3] = new Token(candidate);

@@ -3,15 +3,17 @@
 	#include "globals.h"
 %}
 
-whitespace	[ \t\n]+
-valid		[^ \t\n.?!]+
-punctuation	[.?!]
-candidate	{valid}*{punctuation}+{valid}*
+whitespace		[ \t\n]+
+valid			[^ \t\n.?!]+
+punctuation		[.?!]
+candidate		[^ \t\n]+
 
+%option nounput
 %%
 
 {valid}			{ return TOKEN;}
-{candidate}		{ return CANDIDATE;}
+{candidate}\n	{ return ENDOFSENTENCE;}
+{candidate}		{ return FALSEEND;}
 {whitespace}	{ /*return WHITESPACE*/;}
 
 %%
@@ -43,14 +45,27 @@ Token * getToken()
 	// get the data from the scanner.
 	tokenType type = (tokenType)yylex();
 	string * lexText = new string(yytext);
+	string * stripped = new string(lexText->substr(0, (lexText->length() -1)));
 	Token * returner = NULL;
 
 	// construct the token, if any
 	if (type)
-		returner = new Token((tokenType)type,lexText);
-
+	{	
+		/*if (type == ENDOFSENTENCE)
+		{	
+			string * tempString = new string(lexText->substr(0, (lexText->length() - 1)));
+			delete lexText;
+			lexText = tempString;
+		}
+		else*/
+		if (type == ENDOFSENTENCE)
+			returner = new Token((tokenType)type, stripped);
+		else
+			returner = new Token((tokenType)type,lexText);
+	}
 	// clean up
 	delete lexText;
+	delete stripped;
 
 	// return
 	return returner;

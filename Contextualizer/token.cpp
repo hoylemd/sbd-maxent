@@ -47,7 +47,8 @@ string * Token::typeToString(tokenType type)
     switch(type)
     {
         case TOKEN :        return new string("Token");
-        case WHITESPACE :   return new string("Whitespace");
+        case FALSEEND :		return new string("False end");
+		case ENDOFSENTENCE :return new string("End of sentence");
         case NONE:          return new string("None");
         default:            return new string("Unknown");
     }

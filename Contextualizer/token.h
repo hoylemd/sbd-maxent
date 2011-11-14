@@ -24,7 +24,8 @@ using namespace std;
 typedef enum
 {
     TOKEN = 255,
-    CANDIDATE = 254,
+    FALSEEND = 254,
+	ENDOFSENTENCE = 253,
     WHITESPACE = 252,
     NONE = 0
 } tokenType;
@@ -62,8 +63,3 @@ public:
 };
 #define TOKENCLASS
 #endif
-
-
-
-
-
