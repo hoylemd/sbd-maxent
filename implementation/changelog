@@ -1,2 +1,1 @@
-Added the features module
-Switched to handling all feature functions in the module.
+changed all the buildign and running scripts into a makefile.
