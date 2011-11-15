@@ -1,2 +1,1 @@
-Updated the todo file.
-Added some unit tests.
+Pulled the feature fucntion unit tests out into their own module.
