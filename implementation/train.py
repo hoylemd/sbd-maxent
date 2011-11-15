@@ -1,48 +1,8 @@
-import pickle
-import nltk
-import sys
-import string
-import features
-
-
-def setupData(filename):
-	f = open(filename, 'r')
-
-	lines = f.readlines()
-	
-	contexts = []
-
-	for line in lines:
-		words = (string.split(line))
-	#	for word in words:
-	#		print word + " ",
-	#	print
-		contexts.append(words)
-
-	contextFeatures = []	
-	for context in contexts:
-		case = []
-		feats = features.testFeatures(context)
-		if context[7] == "<Y>":
-			classification = "y"
-		else:
-			classification = "x"
-		case.append(feats)
-		case.append(classification)
-		contextFeatures.append(case)
-
-	return contextFeatures
-
-def train_maxent(algorithm, trainingData):
-	try:
-		classifier = nltk.MaxentClassifier.train(trainingData, 'GIS', trace=0, max_iter=1000)
-	except Exception, e:
-		classifier = e	
-	return classifier
+from utilities import *
 
 if len(sys.argv) == 3:
 	trainingData = setupData(sys.argv[1])
-	model = train_maxent(nltk.classify.MaxentClassifier.ALGORITHMS[0], trainingData)
+	model = train_maxent(trainingData)
 	outputModel = open(sys.argv[2], 'w')
 	pickle.dump(model, outputModel)
 

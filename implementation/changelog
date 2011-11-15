@@ -1,1 +1,5 @@
 Pulled the feature fucntion unit tests out into their own module.
+Pulled the testing, data setup, and training logic into a utilities module.
+"testing" a model is now known as "classiifying a data set"
+Added reporting of correct classifications to classifier output.
+Added summary statistic reporting.
