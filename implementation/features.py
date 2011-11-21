@@ -65,10 +65,21 @@ def inQuote(context, response):
 	# no quotey stuff count. 
 	return 0
 
+# feature function for quotes on candidate
+def candidateQuote(context, response):
+	#get the candidate
+	candidate = context[3].lower()
+
+	if candidate.find('"') == -1:
+		return 0
+	else:
+		return 1
+
 def testFeatures(context):
 	features = dict(
 		honourificTest = isHonourific(context, True),
-		quoteTest = inQuote(context, True)
+		quoteTest = inQuote(context, True),
+		candidateQuoteTest = candidateQuote(context, True)
 		)
 	return features
 

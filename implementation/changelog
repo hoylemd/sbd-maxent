@@ -1,2 +1,1 @@
-Made test output more verbose.
-Added brown corpus testing data for when the existing test data becomes inadequate.
+Added feature function to check if there is a " in the candidate

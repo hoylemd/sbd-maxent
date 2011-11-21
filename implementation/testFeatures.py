@@ -68,3 +68,35 @@ print "Test case: ",
 print context
 assertVal(testName, inQuote(context, True), 0);
 print
+
+# regular, positive, candidate quoted at start
+testName = "candidate quote positive quoted at start"
+context = ["this", "is", "not", "\"Mr.", "honorific", "my", "friend"]
+print "Test case: ",
+print context
+assertVal(testName, candidateQuote(context, True), 1);
+print
+
+# regular, positive, candidate quoted at end
+testName = "candidate quote positive quoted at end"
+context = ["this", "is", "not", "Mr.\"", "honorific", "my", "friend"]
+print "Test case: ",
+print context
+assertVal(testName, candidateQuote(context, True), 1);
+print
+
+# regular, positive, candidate quoted in middle
+testName = "candidate quote positive quoted in middle"
+context = ["this", "is", "not", "M\"r.", "honorific", "my", "friend"]
+print "Test case: ",
+print context
+assertVal(testName, candidateQuote(context, True), 1);
+print
+
+# regular, negative, candidate not a quote
+testName = "candidate quote positive quoted at end"
+context = ["this", "is", "not", "Mr.", "honorific", "my", "friend"]
+print "Test case: ",
+print context
+assertVal(testName, candidateQuote(context, True), 0);
+print
