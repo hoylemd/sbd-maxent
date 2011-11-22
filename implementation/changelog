@@ -1,1 +1,1 @@
-Added feature function to check if there is a " in the candidate
+Added a whole whack of feature functions.  training on the first 100 sentences of the brown corpus now produced 100% disambiguation rate on the following 50 sentences of the brown corpus. Time to expand!

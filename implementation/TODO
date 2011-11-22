@@ -4,5 +4,4 @@ set up some "real" testing/training data.
 feature function ideas:
 check for proceeding and following tokens in the context
 numbers
-quotes in the candidate
 ? or !
