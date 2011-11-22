@@ -1,7 +1,0 @@
-add more feature functions (quotes, numbers).
-set up some "real" testing/training data.
-
-feature function ideas:
-check for proceeding and following tokens in the context
-numbers
-? or !
