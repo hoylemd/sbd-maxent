@@ -1,3 +1,5 @@
+import sys
+
 # list of honourifics to check against
 honourific_list = [
 	"mr.",
@@ -50,6 +52,13 @@ month_list = [
 	"nov.",
 	"dec."
 ]
+
+abbreviation_list = [
+	"fig.",
+	"s.",
+	"av."
+]
+
 # feature function for honourifics
 def isHonourific(context, response):
 	# grab the relevant token
@@ -68,26 +77,32 @@ def inQuote(context, response):
 
 	# initialize the quote level
 	quoteLevel = 0
-
 	# calculate the quote level of the prefix
 	for candidate in context[:3]:
 		# print "candidate: '" + candidate + "' 0:'" + candidate[0] + "' -1:'" + candidate[-1] + "'"
 		if candidate[0] == '"':
 			quoteLevel += 1
-		if candidate[-1] == '"' or (candidate[-1] == ',' and candidate[-2] == '"'):
-			quoteLevel -= 1
-		
+		try:
+			if candidate[-1] == '"' or (candidate[-1] == ',' and candidate[-2] == '"'):
+				quoteLevel -= 1
+		except IndexError:
+			# just continue, there was a standalone ,
+			quoteLevel = quoteLevel	
 
 	# if we have unbalanced open quotes, we are in a quote
 	if quoteLevel > 0:
 		return 1
-
+	
 	# calculate the quote level of the suffix
 	for candidate in context[4:]:
 		if candidate[0] == '"':
 			quoteLevel += 1
-		if candidate[-1] == '"' or (candidate[-1] == ',' and candidate[-2] == '"'):
-			quoteLevel -= 1
+		try:
+			if candidate[-1] == '"' or (candidate[-1] == ',' and candidate[-2] == '"'):
+				quoteLevel -= 1
+		except IndexError:
+			#just continue, there was a standaline ,
+			quoteLevel = quoteLevel
 
 	# if we have unbalanced closed quotes, we are in a quote
 	if quoteLevel < 0:
@@ -95,6 +110,7 @@ def inQuote(context, response):
 
 	# no quotey stuff count. 
 	return 0
+
 
 # feature function for quotes on candidate
 def candidateQuote(context, response):
@@ -179,6 +195,19 @@ def monthAbbreviation(context, response):
 	# fall-through
 	return 0
 
+
+# feature function for common abbreviations
+def isAbbreviation(context, response):
+	# grab the relevant token
+	candidate = context[3].lower()
+
+	# check it against the list
+	for abbreviation in abbreviation_list:	
+		if candidate == abbreviation:
+			return 1
+
+	# fall-through
+
 # function to run all feature tests
 def testFeatures(context):
 	features = dict(
@@ -190,7 +219,8 @@ def testFeatures(context):
 		questionTest = isQuestion(context, True),
 		uppercaseTest = allCaps(context, True),
 		capitalizationTest = followingCapitalized(context, True),
-		monthTest = monthAbbreviation(context, True)
+		monthTest = monthAbbreviation(context, True),
+		abbreviationTest = isAbbreviation(context, True)
 	)
 	return features
 

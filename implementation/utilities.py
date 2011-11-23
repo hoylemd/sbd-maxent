@@ -4,6 +4,8 @@ import sys
 import string
 import features
 
+maxTrainingIterations = 300
+
 # Function to parse context information from a context file
 # parameters: 
 #	filename: The name of the file to parse from
@@ -73,7 +75,7 @@ def train_maxent( trainingData):
 		parsedData.append(context[1])
 	
 	try:
-		classifier = nltk.MaxentClassifier.train(parsedData, 'GIS', trace=0, max_iter=1000)
+		classifier = nltk.MaxentClassifier.train(parsedData, 'GIS', trace=0, max_iter=maxTrainingIterations)
 	except Exception, e:
 		classifier = e	
 	return classifier
@@ -86,7 +88,6 @@ def classify_maxent(model, data):
 		print 'Error:' + model
 	# proceed if it's not an exception
 	else:
-		i = 1
 
 		#initialize summary statistics
 		numTests = 0
@@ -101,11 +102,6 @@ def classify_maxent(model, data):
 			# get the features
 			featureset = featureData[0]
 			
-			# print the test label
-			print "Test #%d:" % (i),
-			i += 1
-			print "\t",
-
 			# classify the data and calculate distributions
 			pdist = model.prob_classify(featureset)
 			label = model.classify(featureset)
@@ -113,21 +109,26 @@ def classify_maxent(model, data):
 			# grab the correct value for this case
 			correct = featureData[1]
 
-			#report all the data
-			print 'n: %.2f y: %.2f descision: %s, correct: %s' % (pdist.prob('n'), pdist.prob('y'), label, correct),
-
 			#check for errors
 			if correct != label:
+				# print the test label
+				print "Test #%d:" % (numTests),
+				print "\t",
+				
+				# report all the data
+				print 'n: %.2f y: %.2f descision: %s, correct: %s' % (pdist.prob('n'), pdist.prob('y'), label, correct),
+				
 				if label == 'y':
-					print " false positive\n\tReport:" + printContext(case[0]),
+					print " false positive\n\tContext:" + printContext(case[0])
+					print "\tFeatures:",
 					print featureData[0]
 					falsePositives += 1
 				else:
-					print " false negative\n\tReport:" + printContext(case[0]),
-					print featureData[0]
 					falseNegatives += 1
+					print " false negative\n\tReport:" + printContext(case[0]),
+					print "\tFeatures:",
+					print featureData[0]
 			else:
-				print
 				if label == 'y':
 					truePositives += 1
 				else:
