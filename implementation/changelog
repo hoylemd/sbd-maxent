@@ -1,1 +1,1 @@
-added makefile to the repo. oops.
+added an explicit call to MaxentClassifier so it works on my laptop.
