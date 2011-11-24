@@ -109,7 +109,8 @@ def classify_maxent(model, data):
 
 	# handle erroneous models
 	if isinstance(model, Exception):
-		print 'Error:' + model
+		print "Invalid Model"
+
 	# proceed if it's not an exception
 	else:
 
@@ -174,3 +175,25 @@ def classify_maxent(model, data):
 		print 'accuracy:        %.3f' % (accuracy)
 		print 'precision:       %.3f' % (precision)
 		print 'recall:          %.3f' % (recall)
+
+def execute(model, data):
+    # handle erroneous models
+    if isinstance(model, Exception):
+        print "Invalid model."
+        return Exception
+    # proceed if it's not an exception
+    else:
+        # initialize the classification list
+        classificationList = []
+
+        # classify each case
+        for case in data:
+            featureData = case[1]
+            featureSet = featureData[0]
+            classification = model.classify(featureset)
+
+            # and add it's classification to the list
+            classificationList.append(classification)
+
+        # return the data
+        return classificationList

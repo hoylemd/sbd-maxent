@@ -1,0 +1,1 @@
+added an explicit call to MaxentClassifier so it works on my laptop.
