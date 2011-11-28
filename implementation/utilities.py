@@ -55,12 +55,36 @@ def setupData(filename):
 
 # Function to print out a context
 def printContext(context):
-	string = ""
-	for word in context:
-		string += " " + word
+	# add the prefix
+	string = "prefix:" 
+	for i in range(0,3):
+		word = context[i]
+		string += " '" + word + "'"
+	
+	# add the candidate
+	string += " candidate:"
+	string += " '" + context[3] + "'"
 
+	# add the suffix
+	string += " suffix:"
+	for i in range(4,7):
+		word = context[i]
+		string += " '" + word + "'"
+
+	# add the classification
+	string += " class: "
+	string += context[7]
+
+	# return the string
 	return string
 
+
+def printFeatures(features):
+	string = ""
+	for feature in features.keys():
+		string += feature + "=" + str(features[feature]) +"\n"
+
+	return string
 
 # Function to train a model
 # parameters: 
@@ -119,15 +143,13 @@ def classify_maxent(model, data):
 				print 'n: %.2f y: %.2f descision: %s, correct: %s' % (pdist.prob('n'), pdist.prob('y'), label, correct),
 				
 				if label == 'y':
-					print " false positive\n\tContext:" + printContext(case[0])
-					print "\tFeatures:",
-					print featureData[0]
+					print " false positive\n\tContext:\n " + printContext(case[0])
+					print "\tFeatures:\n " + printFeatures(featureData[0])
 					falsePositives += 1
 				else:
 					falseNegatives += 1
-					print " false negative\n\tReport:" + printContext(case[0]),
-					print "\tFeatures:",
-					print featureData[0]
+					print " false negative\n\tContext:\n" + printContext(case[0])
+					print "\tFeatures:\n " + printFeatures(featureData[0])
 			else:
 				if label == 'y':
 					truePositives += 1

@@ -35,6 +35,8 @@ honourific_list = [
 	"hrms.",
 	"rep.",
 	"reps.",
+	"rev.",
+	"revs.",
 	"sen.",
 	"sens."
 ]
@@ -162,7 +164,7 @@ def isQuestion(context, response):
 # feature function to check if all alpha chars are capitalized in candidate
 def allCaps(context, response):
 	# get the candidate
-	candidate = context[3]
+	candidate = context[3].replace("*", "")
 	
 	# test it for uppercase	
 	if candidate.isupper():
@@ -196,10 +198,12 @@ def monthAbbreviation(context, response):
 	return 0
 
 
+testContext = ["a", "a", "a", "U.S.*a.", "a", "a", "a"]
+
 # feature function for common abbreviations
 def isAbbreviation(context, response):
 	# grab the relevant token
-	candidate = context[3].lower()
+	candidate = context[3].lower().replace("*", "")
 
 	# check it against the list
 	for abbreviation in abbreviation_list:	
@@ -207,6 +211,7 @@ def isAbbreviation(context, response):
 			return 1
 
 	# fall-through
+	return 0
 
 # function to run all feature tests
 def testFeatures(context):
