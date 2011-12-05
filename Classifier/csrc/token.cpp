@@ -36,6 +36,13 @@ Token::Token(Token * other)
 Token::~Token()
 {
     if (value) delete value;
+
+	/* if the nexts and prevs exist, connect them */
+	if (next)
+		next->setPrev(prev);	
+	if (prev)
+		prev->setNext(next);
+
     next = NULL;
     prev = NULL;
     value = NULL;
@@ -149,6 +156,15 @@ string * Token::toString()
 {
     string * returner = new string();
     string * typeName = NULL;
+
+	
+	/* debugging output */
+	#ifdef DEBUGTOKENS
+	if (this->value)
+		cerr << *this->value;
+	else
+		cerr << "no value!";
+	#endif
 
     // get the string for the type name
     typeName = typeToString(this->type);

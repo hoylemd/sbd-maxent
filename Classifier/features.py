@@ -38,7 +38,9 @@ honourific_list = [
 	"rev.",
 	"revs.",
 	"sen.",
-	"sens."
+	"sens.",
+	"jr.",
+	"sr."
 ]
 
 month_list = [
@@ -58,7 +60,9 @@ month_list = [
 abbreviation_list = [
 	"fig.",
 	"s.",
-	"av."
+	"av.",
+	"pp.",
+	"pg."
 ]
 
 # feature function for honourifics

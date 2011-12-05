@@ -30,12 +30,13 @@ int main(int argc, char* argv[])
 	
     result = getTokenList();
 
-
     // Handle the tokens
     temp = result;
     while (temp)
     {
-		//cerr << "handling token " << *temp->toString() << endl;
+		/* debugging output */
+		/* cerr << "handling token " << *temp->toString() << endl; */
+
         if (temp->getType() == FALSEEND || temp->getType() == ENDOFSENTENCE)
             checkForBoundary(temp);
 
