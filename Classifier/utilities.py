@@ -4,7 +4,7 @@ import sys
 import string
 import features
 
-maxTrainingIterations = 300
+maxTrainingIterations = 50
 
 # Function to parse context information from a context file
 # parameters:

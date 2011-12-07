@@ -1,4 +1,5 @@
 import sys
+import enchant
 
 # list of honourifics to check against
 honourific_list = [
@@ -24,7 +25,9 @@ honourific_list = [
 	"lt.",
 	"lts.",
 	"cpt.",
-	"cpts.,"
+	"capt.",
+	"cpts.",
+	"capts.",
 	"mjr.",
 	"mjrs.",
 	"col.",
@@ -59,24 +62,51 @@ month_list = [
 
 abbreviation_list = [
 	"fig.",
+	"figs.",
 	"s.",
-	"av.",
+	"st.",
+	"ave.",
 	"pp.",
-	"pg."
+	"pg.",
+	"no.",
+	"gov.",
+	"p.m.",
+	"a.m.",
+	"cc.",
+	"inc.",
+	"co.",
+	"i.d.",
+	"cf.",
+	"ch.",
+	"vs.",
+	"h.m.s.",
+	"lb.",
+	"lbs.",
+	"p.",
+	"m.p.h.",
+	"in.",
+	"stat."
+	
 ]
 
-# feature function for honourifics
-def isHonourific(context, response):
-	# grab the relevant token
-	candidate = context[3].lower()
+day_list = [
+	"mon.",
+	"tues.",
+	"wed.",
+	"thurs.",
+	"fri.",
+	"sat.",
+	"sun."
+]
 
-	# check it against the list
-	for honourific in honourific_list:	
-		if candidate == honourific:
-			return 1
+english = enchant.Dict("en_US")
 
-	# fall-through
-	return 0
+mistakeLists = [
+	honourific_list,
+	month_list,
+	abbreviation_list,
+	day_list
+]
 
 # feature function for surrounding quotes
 def inQuote(context, response):
@@ -131,7 +161,7 @@ def candidateQuote(context, response):
 # feature function for number candidates
 def isNumeric(context, response):
 	#get the candidate	
-	candidate = context[3].lower()
+	candidate = context[3].lower().replace(".","")
 	
 	#try to cast it to a float
 	try:
@@ -188,48 +218,64 @@ def followingCapitalized(context, response):
 	else:
 		return 0
 
-# feature function to check if the candidate is a month abbreviation
-def monthAbbreviation(context, response):
-	# grab the relevant token
-	candidate = context[3].lower()
-
-	# check it against the list
-	for month in month_list:	
-		if candidate == month:
-			return 1
-
-	# fall-through
-	return 0
-
-
-testContext = ["a", "a", "a", "U.S.*a.", "a", "a", "a"]
-
-# feature function for common abbreviations
-def isAbbreviation(context, response):
+#feature function for common mistakes (generally abbreviations)
+def isMistake(context, response):
 	# grab the relevant token
 	candidate = context[3].lower().replace("*", "")
 
-	# check it against the list
-	for abbreviation in abbreviation_list:	
-		if candidate == abbreviation:
-			return 1
+	# check it against the lists
+	for list in mistakeLists:
+		for mistake in list:
+			if candidate == mistake:
+				return 1
 
 	# fall-through
 	return 0
+
+#feature function for dictionary words
+def isWord(context, response):
+	#grab the relevant token
+	candidate = context[3].lower().replace("*", "")
+
+	if english.check(candidate):
+		return 1
+	else:
+		return 0
+
+#feature function for dictionary words
+def followingIsWord(context, response):
+	#grab the relevant token
+	candidate = context[4].lower().replace("*", "")
+
+	if english.check(candidate):
+		return 1
+	else:
+		return 0
+
+#feature function for initials
+def isInitial(context, response):
+	#grab the relevant token
+	candidate = context[3].replace("*", "").replace(".", "")
+	
+	if len(candidate) == 1:
+		return 1
+	else:
+		return 0
 
 # function to run all feature tests
 def testFeatures(context):
 	features = dict(
-		honourificTest = isHonourific(context, True),
 		quoteTest = inQuote(context, True),
 		candidateQuoteTest = candidateQuote(context, True),
 		numericTest = isNumeric(context, True),
 		exclaimationTest = isExclaimation(context, True),
 		questionTest = isQuestion(context, True),
 		uppercaseTest = allCaps(context, True),
-		capitalizationTest = followingCapitalized(context, True),
-		monthTest = monthAbbreviation(context, True),
-		abbreviationTest = isAbbreviation(context, True)
+		FollowingCapitalizationTest = followingCapitalized(context, True),
+		mistakeList = isMistake(context, True),
+		dictionaryTest = isWord(context, True),
+		followingDictionary = followingIsWord(context, True),
+		initialTest = isInitial(context, True)
 	)
 	return features
 

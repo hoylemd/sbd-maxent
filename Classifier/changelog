@@ -1,1 +1,1 @@
-modified contextualizer to automatically glue lone punctiation to the preceeding token.
+Added feature to check if the word is a dictionary word.

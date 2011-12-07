@@ -31,7 +31,7 @@ testName = "honourific negative"
 context = ["this", "is", "not", "an", "honorific", "my", "friend"]
 print "Test case: ",
 print context
-assertVal(testName, isHonourific(context, True), 0);
+assertVal(testName, isMistake(context, True), 0);
 print
 
 # regular, positive
@@ -39,7 +39,7 @@ testName = "honourific positive"
 context = ["this", "is", "not", "Mr.", "honorific", "my", "friend"]
 print "Test case: ",
 print context
-assertVal(testName, isHonourific(context, True), 1);
+assertVal(testName, isMistake(context, True), 1);
 print
 
 # test inQuote
@@ -263,7 +263,7 @@ testName = "month abbreviation positive"
 context = ["this", "is", "not", "Feb.", "honorific", "my", "friend"]
 print "Test case: ",
 print context
-assertVal(testName, monthAbbreviation(context, True), 1);
+assertVal(testName, isMistake(context, True), 1);
 print
 
 # regular, negative month abbreviation
@@ -271,7 +271,7 @@ testName = "month abbreviation positive"
 context = ["this", "is", "not", "an.", "honorific", "my", "friend"]
 print "Test case: ",
 print context
-assertVal(testName, monthAbbreviation(context, True), 0);
+assertVal(testName, isMistake(context, True), 0);
 print
 
 
