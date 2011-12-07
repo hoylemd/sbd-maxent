@@ -1,5 +1,6 @@
 brownLoc = data/brown.txt
 brownLength = 51763
+reutersLoc = data/reuters.txt
 
 targetCorpus = ${brownLoc}
 
@@ -33,11 +34,11 @@ TestScript: test.py FeatureModule
 
 FeatureModule: features.py
 
-model : install ${trainingCorpus}
+testModel : install ${trainingCorpus}
 	./GetSample ${trainSize} ${trainingLength} ${trainingCorpus} | ./Contextualizer > train.context
 	python train.py train.context ${modelName}
 
-testClassify : install model ${testCorpus}
+testClassify : install testModel ${testCorpus}
 	./GetSample ${testSize} ${testLength} ${testCorpus} | ./Contextualizer > test.context
 	python test.py test.context ${modelName} > testResults.report
 
@@ -45,6 +46,10 @@ testFeatures: FeatureModule testFeatures.py
 	python testFeatures.py > featureTestResults.txt
 
 test : testFeatures testClassify
+
+model : install ${trainingCorpus}
+	cat ${trainingCorpus} | ./Contextualizer -> train.context
+	python train.py train.context ${modelName}
 
 con1 : install ${targetCorpus}
 	cat ${targetCorpus} | ./newlineStripper > con1.sample

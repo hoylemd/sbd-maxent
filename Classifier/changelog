@@ -1,1 +1,2 @@
-Added features to check if the candidate has punctuation at the end, check if the preceding token has punctuation at the end, and added U.S. state abbreviations to the mistake list, whcih is huge now.
+Added reuters corpus
+modified makefile to train with the brown corpus and execute om the reuters one.
