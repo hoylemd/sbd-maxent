@@ -1,2 +1,3 @@
-Added reuters corpus
-modified makefile to train with the brown corpus and execute om the reuters one.
+added splitsample
+fixed a couple bigs in features
+integrated splitsample into the test protocol so it can split a corpus up into training and testing data. make test now trains on about 10% of the brown corpus and tests on the remaining 90%

@@ -199,22 +199,30 @@ def isNumber(word):
 
 # function to check for dictionary words
 def isWord(candidate):
-	# check the candidate against the dictionary
-	if (len(candidate) > 1 and not isNumber(candidate)): 
-		if english.check(candidate):
-			return True
 	
+	try:
+		# check the candidate against the dictionary
+		if (len(candidate) > 1 and not isNumber(candidate)): 
+			if english.check(candidate):
+				return True
+	
+	except:
+		return False
+		#print "ERROR IN isWord: " + candidate
+		
 	# fall-through
 	return False
 
 # function to check if a token has a punctuation char at the end
 def punctuationAtEnd(token):
-	# grab the relevant char
-	candidate = token[-1]
+	
+	if len(token) > 0:
+		# grab the relevant char
+		candidate = token[-1]
 
-	# check the char against punctuation
-	if (candidate == "." or candidate == "?" or candidate == "!"):
-		return 1
+		# check the char against punctuation
+		if (candidate == "." or candidate == "?" or candidate == "!"):
+			return 1
 	
 	# fall-through
 	return 0

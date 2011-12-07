@@ -1,18 +1,21 @@
 brownLoc = data/brown.txt
 brownLength = 51763
 reutersLoc = data/reuters.txt
+reutersLength = 386830
+remainderFile = test.sample
 
-targetCorpus = ${brownLoc}
+targetCorpus = ${reutersLoc}
 
 trainingCorpus = ${brownLoc}
 trainingLength = ${brownLength}
 
 testCorpus = ${brownLoc}
-testLength = ${brownLength}
+testLength = ${reutersLength}
 
-trainSize = 500
-testSize = 1000
-demoSize = 50
+trainSize = 5000
+testSize = 46763
+demoSize = 50000
+
 
 modelName = main.model
 
@@ -24,6 +27,7 @@ CTools :
 	cd csrc && $(MAKE)
 	cp csrc/Contextualizer .
 	cp csrc/GetSample .
+	cp csrc/SplitSample .
 	cp csrc/stopwatch .
 	cp csrc/Replacer .
 	cp csrc/newlineStripper .
@@ -35,11 +39,11 @@ TestScript: test.py FeatureModule
 FeatureModule: features.py
 
 testModel : install ${trainingCorpus}
-	./GetSample ${trainSize} ${trainingLength} ${trainingCorpus} | ./Contextualizer > train.context
+	./SplitSample ${trainSize} ${trainingLength} ${trainingCorpus} ${remainderFile}| ./Contextualizer > train.context
 	python train.py train.context ${modelName}
 
-testClassify : install testModel ${testCorpus}
-	./GetSample ${testSize} ${testLength} ${testCorpus} | ./Contextualizer > test.context
+testClassify : install testModel
+	cat ${remainderFile} | ./Contextualizer > test.context
 	python test.py test.context ${modelName} > testResults.report
 
 testFeatures: FeatureModule testFeatures.py
@@ -48,7 +52,7 @@ testFeatures: FeatureModule testFeatures.py
 test : testFeatures testClassify
 
 model : install ${trainingCorpus}
-	cat ${trainingCorpus} | ./Contextualizer -> train.context
+	./GetSample ${trainSize} ${trainingLength} ${trainingCorpus} | ./Contextualizer -> train.context
 	python train.py train.context ${modelName}
 
 con1 : install ${targetCorpus}
@@ -57,8 +61,8 @@ con1 : install ${targetCorpus}
 
 execute : model con1
 	python execute.py con1.context ${modelName} > con1.classification
-	cat con1.sample | ./Replacer con1.classification > con1.disambiguated
+	./GetSample ${testSize} ${testLength} ${targetCorpus}|./Replacer con1.classification > con1.disambiguated
 
 clean :
 	cd csrc && $(MAKE) clean
-	rm -f *.pyc Contextualizer GetSample stopwatch Replacer newlineStripper *.model *.context featureTestResults.txt testResults.txt stopwatch.start time.txt con1.txt *.sample *.classification *.disambiguated *.report
+	rm -f *.pyc Contextualizer GetSample SplitSample stopwatch Replacer newlineStripper *.model *.context featureTestResults.txt testResults.txt stopwatch.start time.txt con1.txt *.sample *.classification *.disambiguated *.report

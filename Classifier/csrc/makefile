@@ -2,7 +2,7 @@ CFLAGS=-Wall -pedantic
 COMPILE=g++ -c -g
 LINK=g++
 
-all : Contextualizer GetSample stopwatch Replacer newlineStripper
+all : Contextualizer GetSample SplitSample stopwatch Replacer newlineStripper
 
 lex.yy.cpp : tokenizer.l
 	flex -o lex.yy.cpp tokenizer.l
@@ -14,10 +14,13 @@ newlineStripper : newlineStripper.cpp
 Contextualizer : lex.o main.o token.o context.o globals.h token.h
 	$(LINK) lex.o main.o token.o context.o -o Contextualizer $(CFLAGS)
 
-
 GetSample: getSample.cpp
 	${COMPILE} getSample.cpp -o getSample.o ${CFLAGS}
 	$(LINK) getSample.o -o GetSample ${CFLAGS}
+
+SplitSample: splitSample.cpp
+	${COMPILE} splitSample.cpp -o splitSample.o ${CFLAGS}
+	$(LINK) splitSample.o -o SplitSample ${CFLAGS}
 
 stopwatch: stopwatch.c
 	${COMPILE} stopwatch.c -o stopwatch.o ${CFLAGS}
@@ -45,4 +48,4 @@ test : Contextualizer
 	cat testFile.txt | ./Contextualizer > testFile.context
 
 clean :
-	rm -f *.o lex.yy.cpp *~ Contextualizer GetSample newlineStripper stopwatch Replacer
+	rm -f *.o lex.yy.cpp *~ Contextualizer GetSample SplitSample newlineStripper stopwatch Replacer
