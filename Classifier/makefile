@@ -9,7 +9,7 @@ trainingLength = ${brownLength}
 testCorpus = ${brownLoc}
 testLength = ${brownLength}
 
-trainSize = 250
+trainSize = 500
 testSize = 1000
 demoSize = 50
 

@@ -1,1 +1,1 @@
-Added feature to check if the word is a dictionary word.
+Added features to check if the candidate has punctuation at the end, check if the preceding token has punctuation at the end, and added U.S. state abbreviations to the mistake list, whcih is huge now.

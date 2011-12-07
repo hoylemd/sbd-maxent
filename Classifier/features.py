@@ -85,8 +85,15 @@ abbreviation_list = [
 	"p.",
 	"m.p.h.",
 	"in.",
-	"stat."
-	
+	"stat.",
+	"dept.",
+	"e.g."
+]
+
+
+
+country_list = [
+	"u.s."
 ]
 
 day_list = [
@@ -99,14 +106,118 @@ day_list = [
 	"sun."
 ]
 
+state_list = [
+	"ala.",
+	"ariz.",
+	"ark.",
+	"calif.",
+	"colo.",
+	"conn.",
+	"del.",
+	"fla.",
+	"ga.",
+	"ill.",
+	"ind.",
+	"kans.",
+	"ky.",
+	"la.",
+	"md.",
+	"mass.",
+	"mich.",
+	"minn.",
+	"miss.",
+	"mo.",
+	"mont.",
+	"nebr.",
+	"n.h.",
+	"n.j.",
+	"n.m.",
+	"n.y.",
+	"n.c.",
+	"n.d.",
+	"okla.",
+	"ore.",
+	"pa.",
+	"r.i.",
+	"s.c.",
+	"s.d.",
+	"tenn.",
+	"tex.",
+	"vt.",
+	"va.",
+	"wash.",
+	"w.va.",
+	"wis.",
+	"wyo."
+]
+
 english = enchant.Dict("en_US")
 
 mistakeLists = [
 	honourific_list,
 	month_list,
 	abbreviation_list,
-	day_list
+	day_list,
+	country_list,
+	state_list
 ]
+
+# function to remove all occurances of come chars in a string
+def stripChars(theString, chars):
+	# grab a local copy of the string
+	returner = theString
+
+	# iterate through chars and remove each one
+	for char in chars:	
+		returner = returner.replace(char, "")
+
+	# toss back the stripped string
+	return returner
+
+# function to normalize a strin minimally
+def formatMinimal(candidate):
+	return stripChars(candidate, "*")
+
+# function to normalize a string for analysis
+def formatStandard(candidate):
+	return stripChars(formatMinimal(candidate), ",").lower()
+
+# function to normalize a string with punctuation removed
+def formatStripped(candidate):
+	return stripChars(formatStandard(candidate), ".?!")
+
+# function to check if a word is a number
+def isNumber(word):
+	#try to cast it to a float
+	try:
+		# success. it's a number
+		float(word)
+		return True
+	except ValueError:
+		# failure. not a number
+		return False	
+
+# function to check for dictionary words
+def isWord(candidate):
+	# check the candidate against the dictionary
+	if (len(candidate) > 1 and not isNumber(candidate)): 
+		if english.check(candidate):
+			return True
+	
+	# fall-through
+	return False
+
+# function to check if a token has a punctuation char at the end
+def punctuationAtEnd(token):
+	# grab the relevant char
+	candidate = token[-1]
+
+	# check the char against punctuation
+	if (candidate == "." or candidate == "?" or candidate == "!"):
+		return 1
+	
+	# fall-through
+	return 0
 
 # feature function for surrounding quotes
 def inQuote(context, response):
@@ -163,15 +274,11 @@ def isNumeric(context, response):
 	#get the candidate	
 	candidate = context[3].lower().replace(".","")
 	
-	#try to cast it to a float
-	try:
-		# success. it's a number
-		float(candidate)
+	#check if the candidate is numeric
+	if (isNumber(candidate)):
 		return 1
-	except ValueError:
-		# failure. not a number
+	else:
 		return 0
-
 
 #feature function for ! at the end of the candidate
 def isExclaimation(context, response):
@@ -221,7 +328,7 @@ def followingCapitalized(context, response):
 #feature function for common mistakes (generally abbreviations)
 def isMistake(context, response):
 	# grab the relevant token
-	candidate = context[3].lower().replace("*", "")
+	candidate = formatStandard(context[3])
 
 	# check it against the lists
 	for list in mistakeLists:
@@ -233,34 +340,64 @@ def isMistake(context, response):
 	return 0
 
 #feature function for dictionary words
-def isWord(context, response):
-	#grab the relevant token
-	candidate = context[3].lower().replace("*", "")
+def candidateIsWord(context, response):
+	# grab the relevant token
+	candidate = formatStandard(context[3])
 
-	if english.check(candidate):
-		return 1
-	else:
-		return 0
+	# check if it's a dictionary word
+	if isWord(candidate):
+		return 1;
+
+	# fall-through
+	return 0;
 
 #feature function for dictionary words
 def followingIsWord(context, response):
-	#grab the relevant token
-	candidate = context[4].lower().replace("*", "")
+	# grab the relevant token
+	candidate = formatStandard(context[4])
 
-	if english.check(candidate):
-		return 1
-	else:
-		return 0
+	# check if it's a dictionary word
+	if isWord(candidate):
+		return 1;
+
+	# fall-through
+	return 0;
 
 #feature function for initials
 def isInitial(context, response):
-	#grab the relevant token
-	candidate = context[3].replace("*", "").replace(".", "")
+	# grab the relevant token
+	candidate = formatStripped(context[3])
 	
+	# if it's only one character left, it's probably an initial
 	if len(candidate) == 1:
 		return 1
 	else:
 		return 0
+
+# feature function for if the punctuation is at the end of the word
+def punctuationAtEndFeature(context, response):
+	# grab the relevant char
+	candidate = formatMinimal(context[3])
+
+	# check the char against punctuation
+	if punctuationAtEnd(candidate):
+		return 1
+	
+	# fall-through
+	return 0
+	
+
+# feature function to check if the proceeding word is a candidate
+def precedingCandidate(context, response):
+	# grab the relevant token
+	candidate = formatMinimal(context[2])
+
+	# check if it's a potential end of sentence
+	if punctuationAtEnd(candidate):
+		return 1
+
+	# fall-through
+	return 0
 
 # function to run all feature tests
 def testFeatures(context):
@@ -273,9 +410,11 @@ def testFeatures(context):
 		uppercaseTest = allCaps(context, True),
 		FollowingCapitalizationTest = followingCapitalized(context, True),
 		mistakeList = isMistake(context, True),
-		dictionaryTest = isWord(context, True),
+		dictionaryTest = candidateIsWord(context, True),
 		followingDictionary = followingIsWord(context, True),
-		initialTest = isInitial(context, True)
+		initialTest = isInitial(context, True),
+		punctuationEndTest = punctuationAtEndFeature(context, True),
+		precedingTest = precedingCandidate(context, True)
 	)
 	return features
 
