@@ -67,6 +67,9 @@ execute : ${modelName} ${Input}
 	python execute.py execute.context ${modelName} > execute.classification
 	cat ${Input} | ./Replacer execute.classification > ${output}
 
-clean :
-	cd csrc && $(MAKE) clean
-	rm -f *.pyc Contextualizer GetSample SplitSample stopwatch Replacer newlineStripper *.model *.context featureTestResults.txt testResults.txt stopwatch.start time.txt con1.txt *.sample *.classification *.disambiguated *.report
+tidy:
+	cd csrc && ${MAKE} clean
+	rm -f *.context ${results} ${output} *.sample *.classification *.disambiguated *.report
+
+clean : tidy
+	rm -f *.pyc Contextualizer GetSample SplitSample stopwatch Replacer newlineStripper *.mode
