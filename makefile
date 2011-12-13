@@ -4,9 +4,11 @@ brownLength = 51763
 Corpus = ${brownLoc}
 CorpusLength = ${brownLength}
 
+Input = ${brownLoc}
+
 trainSize = 5000
 remainderSize = 46763
-executeSize = 200
+demoSize = 200
 
 modelName = main.model
 
@@ -14,7 +16,7 @@ remainderFile = remainder.sample
 
 trainSample = train.sample
 testSample = test.sample
-executeSample = execute.sample
+demoSample = demo.sample
 
 results = testResults.report
 output = text.disambiguated
@@ -44,7 +46,7 @@ install : CTools TrainScript TestScript ExecuteScript
 
 splitData : ${Corpus}
 	./SplitSample ${trainSize} ${CorpusLength} ${Corpus} ${remainderFile} > ${trainSample}
-	./SplitSample ${executeSize} ${remainderSize} ${remainderFile} ${testSample} | ./newlineStripper > ${executeSample}
+	./SplitSample ${demoSize} ${remainderSize} ${remainderFile} ${testSample} | ./newlineStripper > ${demoSample}
 	rm ${remainderFile}
 
 train : splitData
@@ -55,10 +57,15 @@ test : ${modelName} ${testSample}
 	cat ${testSample} | ./Contextualizer > test.context
 	python test.py test.context ${modelName} > ${results}
 
-execute : ${modelName} ${executeSample}
-	cat ${executeSample} | ./Contextualizer > execute.context
+demo : ${modelName} ${demoSample}
+	cat ${demoSample} | ./Contextualizer > demo.context
+	python execute.py demo.context ${modelName} > demo.classification
+	cat ${demoSample} | ./Replacer demo.classification > ${output}
+
+execute : ${modelName} ${Input}
+	cat ${Input} | ./Contextualizer > execute.context
 	python execute.py execute.context ${modelName} > execute.classification
-	cat ${executeSample} | ./Replacer execute.classification > ${output}
+	cat ${Input} | ./Replacer execute.classification > ${output}
 
 clean :
 	cd csrc && $(MAKE) clean
