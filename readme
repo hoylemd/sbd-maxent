@@ -1,10 +1,10 @@
 Build and Usage guide
     Building and installing this program is somewhat complex.  It will only run on a Unix-based operating system.  Tools that need to be installed previously are:
 
-    * Python (version 2.4x, 2.5x, or 2.6x)
-    * nltk (and dependencies)
+    * Python (development version) (version 2.4x, 2.5x, or 2.6x)
+    * nltk (and dependencies) (make sure to install numpy)
     * flex
-
+	* enchant
 
 All source code can be downloaded from the sbd-maxent github repository found at:
         git@github.com:hoylemd/sbd-maxent
