@@ -8,7 +8,7 @@ Build and Usage guide
 
 All source code can be downloaded from the sbd-maxent github repository found at:
         git@github.com:hoylemd/sbd-maxent
-Once all dependencies have been installed, cd into the sbd-maxent/Classifier directory and run:
+Once all dependencies have been installed, cd into the sbd-maxent directory and run:
         $make install
 This will install all programs and copy the c++-based tools into the classififer directory.
 In the included makefile, settings can be changed to control what the three main commands to.  These commands are “train”, “test”, “demo, and “execute”. All three of them can be run by:
