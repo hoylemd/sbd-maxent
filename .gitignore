@@ -1,0 +1,16 @@
+*.o
+
+Contextualizer
+GetSample
+Replacer
+SplitSample
+lex.yy.cpp
+newlineStripper
+stopwatch
+
+*.classification
+*.context
+*.disambiguated
+*.model
+*.sample
+
