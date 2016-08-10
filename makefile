@@ -43,6 +43,7 @@ TestScript: test.py UtilitiesModule
 ExecuteScript: execute.py UtilitiesModule
 
 install : CTools TrainScript TestScript ExecuteScript
+	pip install -r requirements.txt
 
 splitData : ${Corpus}
 	./SplitSample ${trainSize} ${CorpusLength} ${Corpus} ${remainderFile} > ${trainSample}
